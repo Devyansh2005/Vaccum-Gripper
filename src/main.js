@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import * as TWEEN from '@tweenjs/tween.js';
 
 // --- Scene Setup ---
 const container = document.getElementById('canvas-container');
@@ -295,10 +296,88 @@ window.addEventListener('resize', () => {
 });
 
 // --- Animation Loop ---
-function animate() {
+function animate(time) {
     requestAnimationFrame(animate);
     controls.update();
+    TWEEN.update(time);
     renderer.render(scene, camera);
 }
 
 animate();
+
+// --- Auto-Pilot Sequence Logic ---
+const autoPilotBtn = document.getElementById('auto-pilot-btn');
+const controlsContainer = document.querySelector('.controls-container');
+
+function moveJointsTo(targetAngles, duration = 1000) {
+    return new Promise(resolve => {
+        const startAngles = sliders.map(s => parseFloat(s.value));
+        new TWEEN.Tween(startAngles)
+            .to(targetAngles, duration)
+            .easing(TWEEN.Easing.Quadratic.InOut)
+            .onUpdate((obj) => {
+                // obj is an array of interpolated values or an object with keys like '0', '1'...
+                sliders.forEach((slider, i) => {
+                    slider.value = obj[i];
+                    slider.dispatchEvent(new Event('input'));
+                });
+            })
+            .onComplete(() => resolve())
+            .start();
+    });
+}
+
+autoPilotBtn.addEventListener('click', async () => {
+    if (autoPilotBtn.classList.contains('running')) return;
+    
+    // Disable UI
+    autoPilotBtn.classList.add('running');
+    autoPilotBtn.innerText = 'Auto-Pilot Active...';
+    Array.from(controlsContainer.children).forEach(child => {
+        if (child.id !== 'auto-pilot-btn') child.classList.add('disabled-control');
+    });
+
+    // Make sure suction is off initially
+    if (isSuctionOn) suctionBtn.click();
+
+    // Wait a brief moment before starting
+    await new Promise(r => setTimeout(r, 500));
+
+    // Sequence
+    // 1. Reset posture
+    await moveJointsTo([0, 0, 0, 0, 0, 0], 1000);
+    
+    // 2. Hover over paper 1 (which is at angle 0)
+    await moveJointsTo([0, 40, -50, 0, -80, 0], 1500);
+    
+    // 3. Descend
+    await moveJointsTo([0, 55, -70, 0, -75, 0], 1000);
+    
+    // 4. Toggle Suction ON
+    suctionBtn.click();
+    await new Promise(r => setTimeout(r, 500));
+    
+    // 5. Lift
+    await moveJointsTo([0, 20, -30, 0, -80, 0], 1000);
+    
+    // 6. Swing to Drop Zone (90 degrees)
+    await moveJointsTo([90, 20, -30, 0, -80, 0], 1500);
+    
+    // 7. Descend to drop
+    await moveJointsTo([90, 45, -60, 0, -75, 0], 1000);
+    
+    // 8. Toggle Suction OFF
+    suctionBtn.click();
+    await new Promise(r => setTimeout(r, 500));
+    
+    // 9. Lift and Return to Home
+    await moveJointsTo([90, 0, 0, 0, 0, 0], 1000);
+    await moveJointsTo([0, 0, 0, 0, 0, 0], 1000);
+    
+    // Re-enable UI
+    autoPilotBtn.classList.remove('running');
+    autoPilotBtn.innerText = 'Run Auto-Pilot';
+    Array.from(controlsContainer.children).forEach(child => {
+        child.classList.remove('disabled-control');
+    });
+});

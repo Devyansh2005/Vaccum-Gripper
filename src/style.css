@@ -191,6 +191,32 @@ input[type=range]::-webkit-slider-thumb:hover {
   background: rgba(0, 229, 255, 0.2);
 }
 
+.auto-pilot-btn {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: #ffd700;
+  color: #ffd700;
+}
+
+.auto-pilot-btn:hover {
+  background: rgba(255, 215, 0, 0.2);
+}
+
+.auto-pilot-btn.running {
+  animation: pulse-border 1.5s infinite;
+  background: rgba(255, 215, 0, 0.2);
+}
+
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+.disabled-control {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
   .dashboard-panel {
