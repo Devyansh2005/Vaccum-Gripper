@@ -249,16 +249,12 @@ suctionBtn.addEventListener('click', () => {
         
         if (closest) {
             heldObject = closest;
-            // Align paper orientation to the suction cup before attaching
-            // To make it look like the paper is perfectly sucked onto the cup
-            heldObject.quaternion.copy(graspPoint.getWorldQuaternion(new THREE.Quaternion()));
-            // The paper is thin, let's rotate it 90 degrees on X if needed so it lies flat on the cup
-            // Actually, grasp point has Y up relative to the cup, and paper has Y up relative to itself.
-            // If we just attach, it might stay relative. 
-            // We want the paper to be flat against the cup.
+            // Add directly to graspPoint to change its coordinate space without maintaining world position.
+            graspPoint.add(heldObject);
+            
+            // Now zero out local transforms so it lies flat exactly at the suction cup center.
             heldObject.position.set(0, 0, 0);
-            heldObject.rotation.set(0, 0, 0); // Flat against the cup's local coordinate system
-            graspPoint.attach(heldObject);
+            heldObject.rotation.set(0, 0, 0);
         }
     } else {
         suctionBtn.innerText = 'Toggle Suction';
