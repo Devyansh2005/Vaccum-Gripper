@@ -237,7 +237,7 @@ suctionBtn.addEventListener('click', () => {
         // Check distance to pickables
         graspPoint.getWorldPosition(worldPosTarget);
         let closest = null;
-        let minDist = 3.0; // grab threshold increased to ensure auto-pilot catches it
+        let minDist = 10.0; // powerful vacuum threshold to guarantee pickup
         
         pickables.forEach(obj => {
             obj.getWorldPosition(objWorldPos);
@@ -360,20 +360,20 @@ autoPilotBtn.addEventListener('click', async () => {
         // 1. Reset posture
         await moveJointsTo([0, 0, 0, 0, 0, 0], 1000);
         
-        // 2. Hover over paper 1 (which is at angle 0)
-        await moveJointsTo([0, 40, -50, 0, -80, 0], 1500);
+        // 2. Hover over paper 1 (which is at X=4, so Base Yaw needs to be -90)
+        await moveJointsTo([-90, 40, -50, 0, -80, 0], 1500);
         
         // 3. Descend
-        await moveJointsTo([0, 55, -70, 0, -75, 0], 1000);
+        await moveJointsTo([-90, 55, -70, 0, -75, 0], 1000);
         
         // 4. Toggle Suction ON
         suctionBtn.click();
         await new Promise(r => setTimeout(r, 500));
         
         // 5. Lift
-        await moveJointsTo([0, 20, -30, 0, -80, 0], 1000);
+        await moveJointsTo([-90, 20, -30, 0, -80, 0], 1000);
         
-        // 6. Swing to Drop Zone (90 degrees)
+        // 6. Swing to Drop Zone (90 degrees opposite)
         await moveJointsTo([90, 20, -30, 0, -80, 0], 1500);
         
         // 7. Descend to drop
