@@ -356,35 +356,44 @@ autoPilotBtn.addEventListener('click', async () => {
         // Wait a brief moment before starting
         await new Promise(r => setTimeout(r, 500));
 
-        // Sequence
         // 1. Reset posture
         await moveJointsTo([0, 0, 0, 0, 0, 0], 1000);
+
+        const targetYaws = [90, -30, -150]; // angles for the 3 papers
+        const dropYaws = [-70, -90, -110]; // fan shape for drop zone
+
+        for (let i = 0; i < targetYaws.length; i++) {
+            const pickYaw = targetYaws[i];
+            const dropYaw = dropYaws[i];
+
+            // 2. Hover over paper
+            await moveJointsTo([pickYaw, 24, 97, 0, 59, 0], 1500);
+            
+            // 3. Descend to touch the paper
+            await moveJointsTo([pickYaw, 34, 103, 0, 43, 0], 1000);
+            
+            // 4. Toggle Suction ON
+            suctionBtn.click();
+            await new Promise(r => setTimeout(r, 500));
+            
+            // 5. Lift
+            await moveJointsTo([pickYaw, 24, 97, 0, 59, 0], 1000);
+            
+            // 6. Swing to Drop Zone
+            await moveJointsTo([dropYaw, 24, 97, 0, 59, 0], 1500);
+            
+            // 7. Descend to drop
+            await moveJointsTo([dropYaw, 34, 103, 0, 43, 0], 1000);
+            
+            // 8. Toggle Suction OFF
+            suctionBtn.click();
+            await new Promise(r => setTimeout(r, 500));
+            
+            // 9. Lift back up
+            await moveJointsTo([dropYaw, 0, 0, 0, 0, 0], 1000);
+        }
         
-        // 2. Hover over paper 1 (mathematically calculated for X=4, Y=1.0)
-        await moveJointsTo([90, 24, 97, 0, 59, 0], 1500);
-        
-        // 3. Descend to touch the paper (X=4, Y=0)
-        await moveJointsTo([90, 34, 103, 0, 43, 0], 1000);
-        
-        // 4. Toggle Suction ON
-        suctionBtn.click();
-        await new Promise(r => setTimeout(r, 500));
-        
-        // 5. Lift
-        await moveJointsTo([90, 24, 97, 0, 59, 0], 1000);
-        
-        // 6. Swing to Drop Zone (90 degrees opposite)
-        await moveJointsTo([-90, 24, 97, 0, 59, 0], 1500);
-        
-        // 7. Descend to drop
-        await moveJointsTo([-90, 34, 103, 0, 43, 0], 1000);
-        
-        // 8. Toggle Suction OFF
-        suctionBtn.click();
-        await new Promise(r => setTimeout(r, 500));
-        
-        // 9. Lift and Return to Home
-        await moveJointsTo([-90, 0, 0, 0, 0, 0], 1000);
+        // Return to Home
         await moveJointsTo([0, 0, 0, 0, 0, 0], 1000);
         
     } catch (error) {
