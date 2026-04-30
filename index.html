@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vacuum Gripper Robot Simulation</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/style.css">
+  </head>
+  <body>
+    <div id="app">
+      <!-- 3D Canvas Container -->
+      <div id="canvas-container"></div>
+      
+      <!-- Premium Glassmorphism Dashboard -->
+      <div class="dashboard-panel">
+        <header>
+          <h1>VACUUM</h1>
+          <p>Robotic Arm Simulator</p>
+        </header>
+
+        <div class="controls-container">
+          <!-- Joint 1: Base (Yaw) -->
+          <div class="control-group">
+            <div class="control-header">
+              <label for="joint1">Base (Yaw)</label>
+              <span id="val1" class="value-display">0°</span>
+            </div>
+            <input type="range" id="joint1" min="-180" max="180" value="0">
+          </div>
+
+          <!-- Joint 2: Shoulder (Roll) -->
+          <div class="control-group">
+            <div class="control-header">
+              <label for="joint2">Shoulder (Roll)</label>
+              <span id="val2" class="value-display">0°</span>
+            </div>
+            <input type="range" id="joint2" min="-90" max="90" value="0">
+          </div>
+
+          <!-- Joint 3: Elbow (Roll) -->
+          <div class="control-group">
+            <div class="control-header">
+              <label for="joint3">Elbow (Roll)</label>
+              <span id="val3" class="value-display">0°</span>
+            </div>
+            <input type="range" id="joint3" min="-135" max="135" value="0">
+          </div>
+
+          <!-- Joint 4: Wrist 1 (Yaw) -->
+          <div class="control-group">
+            <div class="control-header">
+              <label for="joint4">Wrist 1 (Yaw)</label>
+              <span id="val4" class="value-display">0°</span>
+            </div>
+            <input type="range" id="joint4" min="-180" max="180" value="0">
+          </div>
+
+          <!-- Joint 5: Wrist 2 (Roll) -->
+          <div class="control-group">
+            <div class="control-header">
+              <label for="joint5">Wrist 2 (Roll)</label>
+              <span id="val5" class="value-display">0°</span>
+            </div>
+            <input type="range" id="joint5" min="-90" max="90" value="0">
+          </div>
+
+          <!-- Joint 6: Suction Cup (Yaw) -->
+          <div class="control-group">
+            <div class="control-header">
+              <label for="joint6">Suction Base (Yaw)</label>
+              <span id="val6" class="value-display">0°</span>
+            </div>
+            <input type="range" id="joint6" min="-180" max="180" value="0">
+          </div>
+          
+          <button id="suction-btn" class="primary-btn accent-btn">Toggle Suction</button>
+          <button id="reset-btn" class="primary-btn">Reset Posture</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
