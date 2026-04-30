@@ -296,10 +296,10 @@ window.addEventListener('resize', () => {
 });
 
 // --- Animation Loop ---
-function animate(time) {
+function animate() {
     requestAnimationFrame(animate);
     controls.update();
-    TWEEN.update(time);
+    TWEEN.update(); // use internal clock
     renderer.render(scene, camera);
 }
 
