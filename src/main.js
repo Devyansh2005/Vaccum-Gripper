@@ -296,10 +296,12 @@ window.addEventListener('resize', () => {
 });
 
 // --- Animation Loop ---
+const tweenGroup = new TWEEN.Group();
+
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
-    TWEEN.update(); // use internal clock
+    tweenGroup.update(); // explicitly update our group
     renderer.render(scene, camera);
 }
 
@@ -319,7 +321,7 @@ function moveJointsTo(targetAngles, duration = 1000) {
                 endObj[i] = targetAngles[i];
             });
 
-            new TWEEN.Tween(startObj)
+            new TWEEN.Tween(startObj, tweenGroup)
                 .to(endObj, duration)
                 .easing(TWEEN.Easing.Quadratic.InOut)
                 .onUpdate((obj) => {
