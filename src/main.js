@@ -237,7 +237,7 @@ suctionBtn.addEventListener('click', () => {
         // Check distance to pickables
         graspPoint.getWorldPosition(worldPosTarget);
         let closest = null;
-        let minDist = 1.0; // grab threshold
+        let minDist = 3.0; // grab threshold increased to ensure auto-pilot catches it
         
         pickables.forEach(obj => {
             obj.getWorldPosition(objWorldPos);
