@@ -361,30 +361,30 @@ autoPilotBtn.addEventListener('click', async () => {
         await moveJointsTo([0, 0, 0, 0, 0, 0], 1000);
         
         // 2. Hover over paper 1 (mathematically calculated for X=4, Y=1.0)
-        await moveJointsTo([-90, 24, 97, 0, 59, 0], 1500);
+        await moveJointsTo([90, 24, 97, 0, 59, 0], 1500);
         
         // 3. Descend to touch the paper (X=4, Y=0)
-        await moveJointsTo([-90, 34, 103, 0, 43, 0], 1000);
+        await moveJointsTo([90, 34, 103, 0, 43, 0], 1000);
         
         // 4. Toggle Suction ON
         suctionBtn.click();
         await new Promise(r => setTimeout(r, 500));
         
         // 5. Lift
-        await moveJointsTo([-90, 24, 97, 0, 59, 0], 1000);
+        await moveJointsTo([90, 24, 97, 0, 59, 0], 1000);
         
         // 6. Swing to Drop Zone (90 degrees opposite)
-        await moveJointsTo([90, 24, 97, 0, 59, 0], 1500);
+        await moveJointsTo([-90, 24, 97, 0, 59, 0], 1500);
         
         // 7. Descend to drop
-        await moveJointsTo([90, 34, 103, 0, 43, 0], 1000);
+        await moveJointsTo([-90, 34, 103, 0, 43, 0], 1000);
         
         // 8. Toggle Suction OFF
         suctionBtn.click();
         await new Promise(r => setTimeout(r, 500));
         
         // 9. Lift and Return to Home
-        await moveJointsTo([90, 0, 0, 0, 0, 0], 1000);
+        await moveJointsTo([-90, 0, 0, 0, 0, 0], 1000);
         await moveJointsTo([0, 0, 0, 0, 0, 0], 1000);
         
     } catch (error) {
