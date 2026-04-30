@@ -237,7 +237,7 @@ suctionBtn.addEventListener('click', () => {
         // Check distance to pickables
         graspPoint.getWorldPosition(worldPosTarget);
         let closest = null;
-        let minDist = 10.0; // powerful vacuum threshold to guarantee pickup
+        let minDist = 1.5; // grab threshold
         
         pickables.forEach(obj => {
             obj.getWorldPosition(objWorldPos);
@@ -360,24 +360,24 @@ autoPilotBtn.addEventListener('click', async () => {
         // 1. Reset posture
         await moveJointsTo([0, 0, 0, 0, 0, 0], 1000);
         
-        // 2. Hover over paper 1 (which is at X=4, so Base Yaw needs to be -90)
-        await moveJointsTo([-90, 40, -50, 0, -80, 0], 1500);
+        // 2. Hover over paper 1 (mathematically calculated for X=4, Y=1.0)
+        await moveJointsTo([-90, 24, 97, 0, 59, 0], 1500);
         
-        // 3. Descend
-        await moveJointsTo([-90, 55, -70, 0, -75, 0], 1000);
+        // 3. Descend to touch the paper (X=4, Y=0)
+        await moveJointsTo([-90, 34, 103, 0, 43, 0], 1000);
         
         // 4. Toggle Suction ON
         suctionBtn.click();
         await new Promise(r => setTimeout(r, 500));
         
         // 5. Lift
-        await moveJointsTo([-90, 20, -30, 0, -80, 0], 1000);
+        await moveJointsTo([-90, 24, 97, 0, 59, 0], 1000);
         
         // 6. Swing to Drop Zone (90 degrees opposite)
-        await moveJointsTo([90, 20, -30, 0, -80, 0], 1500);
+        await moveJointsTo([90, 24, 97, 0, 59, 0], 1500);
         
         // 7. Descend to drop
-        await moveJointsTo([90, 45, -60, 0, -75, 0], 1000);
+        await moveJointsTo([90, 34, 103, 0, 43, 0], 1000);
         
         // 8. Toggle Suction OFF
         suctionBtn.click();
